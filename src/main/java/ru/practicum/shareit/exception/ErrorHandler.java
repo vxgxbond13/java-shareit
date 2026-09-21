@@ -39,4 +39,5 @@ public class ErrorHandler {
         log.error("Internal error: {}", e.getMessage(), e);
         return Map.of("error", e.getMessage());
     }
+
 }
