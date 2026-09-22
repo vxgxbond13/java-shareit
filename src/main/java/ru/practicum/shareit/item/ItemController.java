@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.util.RequestHeaders;
 
 import java.util.List;
 
@@ -25,19 +26,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemController {
 
-    private static final String USER_ID_HEADER = "X-Sharer-User-Id";
-
     private final ItemService itemService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDto create(@RequestHeader(USER_ID_HEADER) Long userId,
+    public ItemDto create(@RequestHeader(RequestHeaders.USER_ID) Long userId,
                           @Valid @RequestBody ItemDto itemDto) {
         return itemService.create(userId, itemDto);
     }
 
     @PatchMapping("/{itemId}")
-    public ItemDto update(@RequestHeader(USER_ID_HEADER) Long userId,
+    public ItemDto update(@RequestHeader(RequestHeaders.USER_ID) Long userId,
                           @PathVariable Long itemId,
                           @RequestBody ItemDto itemDto) {
         return itemService.update(userId, itemId, itemDto);
@@ -49,7 +48,7 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<ItemDto> getByOwner(@RequestHeader(USER_ID_HEADER) Long userId) {
+    public List<ItemDto> getByOwner(@RequestHeader(RequestHeaders.USER_ID) Long userId) {
         return itemService.getByOwner(userId);
     }
 
