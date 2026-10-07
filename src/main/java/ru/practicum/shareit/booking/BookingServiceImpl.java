@@ -78,15 +78,7 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingResponseDto> getByUser(Long userId, BookingState state) {
         userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
-        LocalDateTime now = LocalDateTime.now();
-        List<Booking> list = switch (state) {
-            case ALL -> bookingRepository.findByBookerIdOrderByStartDesc(userId);
-            case CURRENT -> bookingRepository.findCurrentByBooker(userId, now);
-            case PAST -> bookingRepository.findByBookerIdAndEndBeforeOrderByStartDesc(userId, now);
-            case FUTURE -> bookingRepository.findByBookerIdAndStartAfterOrderByStartDesc(userId, now);
-            case WAITING -> bookingRepository.findByBookerIdAndStatusOrderByStartDesc(userId, BookingStatus.WAITING);
-            case REJECTED -> bookingRepository.findByBookerIdAndStatusOrderByStartDesc(userId, BookingStatus.REJECTED);
-        };
+        List<Booking> list = state.findForBooker(bookingRepository, userId, LocalDateTime.now());
         return list.stream().map(this::toResponse).collect(Collectors.toList());
     }
 
@@ -94,16 +86,7 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingResponseDto> getByOwner(Long userId, BookingState state) {
         userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
-        LocalDateTime now = LocalDateTime.now();
-        List<Booking> list = switch (state) {
-            case ALL -> bookingRepository.findByItemOwnerIdOrderByStartDesc(userId);
-            case CURRENT -> bookingRepository.findCurrentByOwner(userId, now);
-            case PAST -> bookingRepository.findByItemOwnerIdAndEndBeforeOrderByStartDesc(userId, now);
-            case FUTURE -> bookingRepository.findByItemOwnerIdAndStartAfterOrderByStartDesc(userId, now);
-            case WAITING -> bookingRepository.findByItemOwnerIdAndStatusOrderByStartDesc(userId, BookingStatus.WAITING);
-            case REJECTED ->
-                    bookingRepository.findByItemOwnerIdAndStatusOrderByStartDesc(userId, BookingStatus.REJECTED);
-        };
+        List<Booking> list = state.findForOwner(bookingRepository, userId, LocalDateTime.now());
         return list.stream().map(this::toResponse).collect(Collectors.toList());
     }
 
