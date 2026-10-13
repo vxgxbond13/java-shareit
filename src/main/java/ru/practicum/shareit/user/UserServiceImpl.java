@@ -7,6 +7,7 @@ import ru.practicum.shareit.exception.ConflictException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.user.dto.UserDto;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,6 +20,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
+    @Transactional
     public UserDto create(UserDto userDto) {
         validateEmail(userDto.getEmail(), null);
         User user = UserMapper.toUser(userDto);
@@ -29,6 +31,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDto update(Long userId, UserDto userDto) {
         User existing = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь с id=" + userId + " не найден"));
@@ -41,7 +44,7 @@ public class UserServiceImpl implements UserService {
             existing.setName(userDto.getName());
         }
 
-        User updated = userRepository.update(existing);
+        User updated = userRepository.save(existing);
         log.info("Обновлён пользователь: {}", updated);
         return UserMapper.toUserDto(updated);
     }
@@ -61,6 +64,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void delete(Long userId) {
         if (userRepository.findById(userId).isEmpty()) {
             throw new NotFoundException("Пользователь с id=" + userId + " не найден");

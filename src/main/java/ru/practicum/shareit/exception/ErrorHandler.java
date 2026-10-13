@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.Map;
 
@@ -38,6 +39,12 @@ public class ErrorHandler {
     public Map<String, String> handleOther(Exception e) {
         log.error("Internal error: {}", e.getMessage(), e);
         return Map.of("error", e.getMessage());
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleTypeMismatch(MethodArgumentTypeMismatchException e) {
+        return Map.of("error", "Некорректное значение параметра: " + e.getValue());
     }
 
 }

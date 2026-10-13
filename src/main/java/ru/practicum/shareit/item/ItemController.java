@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import ru.practicum.shareit.item.dto.CommentDto;
+import ru.practicum.shareit.item.dto.ItemDetailsDto;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemWithBookingsDto;
 import ru.practicum.shareit.util.RequestHeaders;
 
 import java.util.List;
@@ -42,13 +45,21 @@ public class ItemController {
         return itemService.update(userId, itemId, itemDto);
     }
 
+    @PostMapping("/{itemId}/comment")
+    public CommentDto addComment(@RequestHeader(RequestHeaders.USER_ID) Long userId,
+                                 @PathVariable Long itemId,
+                                 @Valid @RequestBody CommentDto dto) {
+        return itemService.addComment(userId, itemId, dto);
+    }
+
     @GetMapping("/{itemId}")
-    public ItemDto getById(@PathVariable Long itemId) {
-        return itemService.getById(itemId);
+    public ItemDetailsDto getById(@PathVariable Long itemId,
+                                  @RequestHeader(RequestHeaders.USER_ID) Long userId) {
+        return itemService.getById(itemId, userId);
     }
 
     @GetMapping
-    public List<ItemDto> getByOwner(@RequestHeader(RequestHeaders.USER_ID) Long userId) {
+    public List<ItemWithBookingsDto> getByOwner(@RequestHeader(RequestHeaders.USER_ID) Long userId) {
         return itemService.getByOwner(userId);
     }
 
