@@ -11,9 +11,18 @@ public class RequestClient extends BaseClient {
         super(restTemplate, serverUrl);
     }
 
-    public ResponseEntity<Object> create(Long userId, Object dto) { return post("/requests", userId, dto); }
-    public ResponseEntity<Object> getByUser(Long userId) { return get("/requests", userId, null); }
-    public ResponseEntity<Object> getAll(Long userId) { return get("/requests/all", userId, null); }
+    public ResponseEntity<Object> create(Long userId, Object dto) {
+        return post("/requests", userId, dto);
+    }
+
+    public ResponseEntity<Object> getByUser(Long userId) {
+        return get("/requests", userId, null);
+    }
+
+    public ResponseEntity<Object> getAll(Long userId) {
+        return get("/requests/all", userId, null);
+    }
+
     public ResponseEntity<Object> getById(Long userId, Long requestId) {
         return get("/requests/" + requestId, userId, null);
     }

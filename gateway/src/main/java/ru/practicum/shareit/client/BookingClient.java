@@ -13,7 +13,9 @@ public class BookingClient extends BaseClient {
         super(restTemplate, serverUrl);
     }
 
-    public ResponseEntity<Object> create(Long userId, Object dto) { return post("/bookings", userId, dto); }
+    public ResponseEntity<Object> create(Long userId, Object dto) {
+        return post("/bookings", userId, dto);
+    }
 
     public ResponseEntity<Object> approve(Long userId, Long bookingId, boolean approved) {
         return patch("/bookings/" + bookingId + "?approved=" + approved, userId, null);

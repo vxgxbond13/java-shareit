@@ -11,9 +11,23 @@ public class UserClient extends BaseClient {
         super(restTemplate, serverUrl);
     }
 
-    public ResponseEntity<Object> create(Object dto) { return post("/users", null, dto); }
-    public ResponseEntity<Object> update(Long userId, Object dto) { return patch("/users/" + userId, null, dto); }
-    public ResponseEntity<Object> getById(Long userId) { return get("/users/" + userId, null, null); }
-    public ResponseEntity<Object> getAll() { return get("/users", null, null); }
-    public ResponseEntity<Object> delete(Long userId) { return delete("/users/" + userId, null); }
+    public ResponseEntity<Object> create(Object dto) {
+        return post("/users", null, dto);
+    }
+
+    public ResponseEntity<Object> update(Long userId, Object dto) {
+        return patch("/users/" + userId, null, dto);
+    }
+
+    public ResponseEntity<Object> getById(Long userId) {
+        return get("/users/" + userId, null, null);
+    }
+
+    public ResponseEntity<Object> getAll() {
+        return get("/users", null, null);
+    }
+
+    public ResponseEntity<Object> delete(Long userId) {
+        return delete("/users/" + userId, null);
+    }
 }
