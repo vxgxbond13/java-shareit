@@ -13,10 +13,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-/**
- * TODO Sprint add-controllers.
- */
-
 @Getter
 @Setter
 @ToString

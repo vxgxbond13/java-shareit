@@ -7,9 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-/**
- * TODO Sprint add-bookings.
- */
 @Data
 @Builder
 @NoArgsConstructor
@@ -17,12 +14,9 @@ import java.time.LocalDateTime;
 public class BookingDto {
     private Long id;
 
-
     private LocalDateTime start;
 
-
     private LocalDateTime end;
-
 
     private Long itemId;
 
